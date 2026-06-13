@@ -16,3 +16,7 @@ def people():
 @app.get("/study")
 def course():
     return {"course": "FastAPI", "level": "Beginner"}
+
+@app.get("/people/{person_id}")
+def get_people(person_id : int):
+    return {"person_id": person_id, "message": "Estudiante encontrado"}
