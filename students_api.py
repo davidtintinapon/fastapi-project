@@ -25,3 +25,12 @@ def get_student(student_id: int):
         return {"student": students[student_id]}
     else:
         return {"error": "Estudiante no encontrado"}
+    
+@app.delete("/students/{student_id}")
+def delete_student(student_id: int):
+    if 0 <= student_id < len(students):
+        students.pop(student_id)
+        return {"message": "Estudiante eliminado"}
+
+    else:
+        return {"error": "Estudiante no encontrado"}
