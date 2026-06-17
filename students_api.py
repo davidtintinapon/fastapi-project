@@ -31,6 +31,13 @@ def delete_student(student_id: int):
     if 0 <= student_id < len(students):
         students.pop(student_id)
         return {"message": "Estudiante eliminado"}
+    else:
+        return {"error": "Estudiante no encontrado"}
 
+@app.put("/students/{student_id}")
+def update_student(student_id: int, student: Student):
+    if 0 <= student_id < len(students):
+        students[student_id] = student
+        return {"message": "Estudiante modificado"}
     else:
         return {"error": "Estudiante no encontrado"}
