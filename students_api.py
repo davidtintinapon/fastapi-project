@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -10,7 +10,7 @@ class Student(BaseModel):
 
 students = []
 
-@app.post("/students")
+@app.post("/students", status_code=201)
 def create_student(student: Student):
     students.append(student)
     return {"message": "Estudiante creado", "student": student}
@@ -21,23 +21,21 @@ def view_student():
 
 @app.get("/students/{student_id}")
 def get_student(student_id: int):
-    if 0 <= student_id < len(students):
-        return {"student": students[student_id]}
-    else:
-        return {"error": "Estudiante no encontrado"}
+    if not (0 <= student_id < len(students)):
+        raise HTTPException(status_code=404, detail="Estudiante no encontrado") 
+    return {"student": students[student_id]}
     
 @app.delete("/students/{student_id}")
 def delete_student(student_id: int):
-    if 0 <= student_id < len(students):
-        students.pop(student_id)
-        return {"message": "Estudiante eliminado"}
-    else:
-        return {"error": "Estudiante no encontrado"}
+    if not (0 <= student_id < len(students)):
+        raise HTTPException(status_code=404, detail="Estudiante no encontrado") 
+    students.pop(student_id)
+    return {"message": "Estudiante eliminado"}
+    
 
 @app.put("/students/{student_id}")
 def update_student(student_id: int, student: Student):
-    if 0 <= student_id < len(students):
-        students[student_id] = student
-        return {"message": "Estudiante modificado"}
-    else:
-        return {"error": "Estudiante no encontrado"}
+    if not (0 <= student_id < len(students)):
+        raise HTTPException(status_code=404, detail="Estudiante no encontrado") 
+    students[student_id] = student
+    return {"message": "Estudiante modificado"}
