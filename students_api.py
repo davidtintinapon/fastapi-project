@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 
 class Student(BaseModel):
-    name: str
-    age: int
-    career: str
+    name: str = Field(min_length=1, max_length=50)
+    age: int = Field(gt=0, lt=120)
+    career: str = Field(min_length=1, max_length=50)
 
 students = []
 
