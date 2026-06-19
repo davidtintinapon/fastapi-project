@@ -1,13 +1,7 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from book_models import Book
 
 app = FastAPI()
-
-class Book(BaseModel):
-    title: str = Field(min_length=1, max_length=50)
-    author: str = Field(min_length=1, max_length=50)
-    year: int = Field(gt=1000, lt=2027)
-
 books = []
 
 @app.post("/books", status_code=201)
