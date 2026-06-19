@@ -1,13 +1,7 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from models import Student
 
 app = FastAPI()
-
-class Student(BaseModel):
-    name: str = Field(min_length=1, max_length=50)
-    age: int = Field(gt=0, lt=120)
-    career: str = Field(min_length=1, max_length=50)
-
 students = []
 
 @app.post("/students", status_code=201)
@@ -32,10 +26,9 @@ def delete_student(student_id: int):
     students.pop(student_id)
     return {"message": "Estudiante eliminado"}
     
-
 @app.put("/students/{student_id}")
 def update_student(student_id: int, student: Student):
     if not (0 <= student_id < len(students)):
         raise HTTPException(status_code=404, detail="Estudiante no encontrado") 
     students[student_id] = student
-    return {"message": "Estudiante modificado"}
+    return {"message": "Estudiante modificado"} 
